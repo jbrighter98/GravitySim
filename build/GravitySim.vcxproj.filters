@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\JoeBrighterWebsite\PortfolioProjects\GravitySim\src\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\JoeBrighterWebsite\PortfolioProjects\GravitySim\src\glad.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\JoeBrighterWebsite\PortfolioProjects\GravitySim\deps\imgui.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\JoeBrighterWebsite\PortfolioProjects\GravitySim\deps\imgui_draw.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\JoeBrighterWebsite\PortfolioProjects\GravitySim\deps\imgui_widgets.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\JoeBrighterWebsite\PortfolioProjects\GravitySim\deps\imgui_tables.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\JoeBrighterWebsite\PortfolioProjects\GravitySim\deps\imgui_demo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\JoeBrighterWebsite\PortfolioProjects\GravitySim\deps\imgui_impl_glfw.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\JoeBrighterWebsite\PortfolioProjects\GravitySim\deps\imgui_impl_opengl3.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\JoeBrighterWebsite\PortfolioProjects\GravitySim\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4F981E38-CD5E-31C3-AB2A-39420A47CBB5}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

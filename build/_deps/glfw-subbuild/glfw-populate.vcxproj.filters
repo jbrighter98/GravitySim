@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\JoeBrighterWebsite\PortfolioProjects\GravitySim\build\_deps\glfw-subbuild\CMakeFiles\d65887bdaa069fbbb70089d72a066df5\glfw-populate-mkdir.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\JoeBrighterWebsite\PortfolioProjects\GravitySim\build\_deps\glfw-subbuild\CMakeFiles\d65887bdaa069fbbb70089d72a066df5\glfw-populate-download.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\JoeBrighterWebsite\PortfolioProjects\GravitySim\build\_deps\glfw-subbuild\CMakeFiles\d65887bdaa069fbbb70089d72a066df5\glfw-populate-update.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\JoeBrighterWebsite\PortfolioProjects\GravitySim\build\_deps\glfw-subbuild\CMakeFiles\d65887bdaa069fbbb70089d72a066df5\glfw-populate-patch.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\JoeBrighterWebsite\PortfolioProjects\GravitySim\build\_deps\glfw-subbuild\CMakeFiles\d65887bdaa069fbbb70089d72a066df5\glfw-populate-configure.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\JoeBrighterWebsite\PortfolioProjects\GravitySim\build\_deps\glfw-subbuild\CMakeFiles\d65887bdaa069fbbb70089d72a066df5\glfw-populate-build.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\JoeBrighterWebsite\PortfolioProjects\GravitySim\build\_deps\glfw-subbuild\CMakeFiles\d65887bdaa069fbbb70089d72a066df5\glfw-populate-install.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\JoeBrighterWebsite\PortfolioProjects\GravitySim\build\_deps\glfw-subbuild\CMakeFiles\d65887bdaa069fbbb70089d72a066df5\glfw-populate-test.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\JoeBrighterWebsite\PortfolioProjects\GravitySim\build\_deps\glfw-subbuild\CMakeFiles\de3d3a99370e5ac576abdd36cbd2b7fe\glfw-populate-complete.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\JoeBrighterWebsite\PortfolioProjects\GravitySim\build\_deps\glfw-subbuild\CMakeFiles\753fd82b1b6ab972dd70d606f383a007\glfw-populate.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\JoeBrighterWebsite\PortfolioProjects\GravitySim\build\_deps\glfw-subbuild\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="C:\JoeBrighterWebsite\PortfolioProjects\GravitySim\build\_deps\glfw-subbuild\CMakeFiles\glfw-populate" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{174AB723-9EE1-31C5-AE03-A75297503EBF}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

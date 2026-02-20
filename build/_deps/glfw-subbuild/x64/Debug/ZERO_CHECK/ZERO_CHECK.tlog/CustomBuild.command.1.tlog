@@ -1,0 +1,10 @@
+^C:\JOEBRIGHTERWEBSITE\PORTFOLIOPROJECTS\GRAVITYSIM\BUILD\_DEPS\GLFW-SUBBUILD\CMAKEFILES\753FD82B1B6AB972DD70D606F383A007\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/JoeBrighterWebsite/PortfolioProjects/GravitySim/build/_deps/glfw-subbuild -BC:/JoeBrighterWebsite/PortfolioProjects/GravitySim/build/_deps/glfw-subbuild --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file C:/JoeBrighterWebsite/PortfolioProjects/GravitySim/build/_deps/glfw-subbuild/glfw-populate.sln
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

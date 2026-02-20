@@ -1,0 +1,300 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ResolveNugetPackages>false</ResolveNugetPackages>
+  </PropertyGroup>
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="MinSizeRel|x64">
+      <Configuration>MinSizeRel</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="RelWithDebInfo|x64">
+      <Configuration>RelWithDebInfo</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{5A8BC991-ADA2-3466-AA93-90564D025BF3}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>10.0.26100.0</WindowsTargetPlatformVersion>
+    <Platform>x64</Platform>
+    <ProjectName>ALL_BUILD</ProjectName>
+    <VCProjectUpgraderObjectName>NoUpgrade</VCProjectUpgraderObjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Midl>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Midl>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">
+    <Midl>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">
+    <Midl>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\JoeBrighterWebsite\PortfolioProjects\GravitySim\build\_deps\glfw-src\CMakeLists.txt">
+      <UseUtf8Encoding>Always</UseUtf8Encoding>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Building Custom Rule C:/JoeBrighterWebsite/PortfolioProjects/GravitySim/build/_deps/glfw-src/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/JoeBrighterWebsite/PortfolioProjects/GravitySim -BC:/JoeBrighterWebsite/PortfolioProjects/GravitySim/build --check-stamp-file C:/JoeBrighterWebsite/PortfolioProjects/GravitySim/build/_deps/glfw-build/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\JoeBrighterWebsite\PortfolioProjects\GravitySim\build\_deps\glfw-src\src\glfw3.pc.in;C:\JoeBrighterWebsite\PortfolioProjects\GravitySim\build\_deps\glfw-src\src\glfw3Config.cmake.in;C:\JoeBrighterWebsite\PortfolioProjects\GravitySim\build\_deps\glfw-src\src\glfw_config.h.in;C:\Program Files\CMake\share\cmake-3.27\Modules\BasicConfigVersion-SameMajorVersion.cmake.in;C:\Program Files\CMake\share\cmake-3.27\Modules\CMakeDependentOption.cmake;C:\Program Files\CMake\share\cmake-3.27\Modules\CMakePackageConfigHelpers.cmake;C:\Program Files\CMake\share\cmake-3.27\Modules\CheckCSourceCompiles.cmake;C:\Program Files\CMake\share\cmake-3.27\Modules\CheckIncludeFile.cmake;C:\Program Files\CMake\share\cmake-3.27\Modules\CheckLibraryExists.cmake;C:\Program Files\CMake\share\cmake-3.27\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files\CMake\share\cmake-3.27\Modules\FindPackageMessage.cmake;C:\Program Files\CMake\share\cmake-3.27\Modules\FindThreads.cmake;C:\Program Files\CMake\share\cmake-3.27\Modules\GNUInstallDirs.cmake;C:\Program Files\CMake\share\cmake-3.27\Modules\Internal\CheckSourceCompiles.cmake;C:\Program Files\CMake\share\cmake-3.27\Modules\WriteBasicConfigVersionFile.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\JoeBrighterWebsite\PortfolioProjects\GravitySim\build\_deps\glfw-build\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Building Custom Rule C:/JoeBrighterWebsite/PortfolioProjects/GravitySim/build/_deps/glfw-src/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/JoeBrighterWebsite/PortfolioProjects/GravitySim -BC:/JoeBrighterWebsite/PortfolioProjects/GravitySim/build --check-stamp-file C:/JoeBrighterWebsite/PortfolioProjects/GravitySim/build/_deps/glfw-build/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\JoeBrighterWebsite\PortfolioProjects\GravitySim\build\_deps\glfw-src\src\glfw3.pc.in;C:\JoeBrighterWebsite\PortfolioProjects\GravitySim\build\_deps\glfw-src\src\glfw3Config.cmake.in;C:\JoeBrighterWebsite\PortfolioProjects\GravitySim\build\_deps\glfw-src\src\glfw_config.h.in;C:\Program Files\CMake\share\cmake-3.27\Modules\BasicConfigVersion-SameMajorVersion.cmake.in;C:\Program Files\CMake\share\cmake-3.27\Modules\CMakeDependentOption.cmake;C:\Program Files\CMake\share\cmake-3.27\Modules\CMakePackageConfigHelpers.cmake;C:\Program Files\CMake\share\cmake-3.27\Modules\CheckCSourceCompiles.cmake;C:\Program Files\CMake\share\cmake-3.27\Modules\CheckIncludeFile.cmake;C:\Program Files\CMake\share\cmake-3.27\Modules\CheckLibraryExists.cmake;C:\Program Files\CMake\share\cmake-3.27\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files\CMake\share\cmake-3.27\Modules\FindPackageMessage.cmake;C:\Program Files\CMake\share\cmake-3.27\Modules\FindThreads.cmake;C:\Program Files\CMake\share\cmake-3.27\Modules\GNUInstallDirs.cmake;C:\Program Files\CMake\share\cmake-3.27\Modules\Internal\CheckSourceCompiles.cmake;C:\Program Files\CMake\share\cmake-3.27\Modules\WriteBasicConfigVersionFile.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\JoeBrighterWebsite\PortfolioProjects\GravitySim\build\_deps\glfw-build\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">Building Custom Rule C:/JoeBrighterWebsite/PortfolioProjects/GravitySim/build/_deps/glfw-src/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/JoeBrighterWebsite/PortfolioProjects/GravitySim -BC:/JoeBrighterWebsite/PortfolioProjects/GravitySim/build --check-stamp-file C:/JoeBrighterWebsite/PortfolioProjects/GravitySim/build/_deps/glfw-build/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">C:\JoeBrighterWebsite\PortfolioProjects\GravitySim\build\_deps\glfw-src\src\glfw3.pc.in;C:\JoeBrighterWebsite\PortfolioProjects\GravitySim\build\_deps\glfw-src\src\glfw3Config.cmake.in;C:\JoeBrighterWebsite\PortfolioProjects\GravitySim\build\_deps\glfw-src\src\glfw_config.h.in;C:\Program Files\CMake\share\cmake-3.27\Modules\BasicConfigVersion-SameMajorVersion.cmake.in;C:\Program Files\CMake\share\cmake-3.27\Modules\CMakeDependentOption.cmake;C:\Program Files\CMake\share\cmake-3.27\Modules\CMakePackageConfigHelpers.cmake;C:\Program Files\CMake\share\cmake-3.27\Modules\CheckCSourceCompiles.cmake;C:\Program Files\CMake\share\cmake-3.27\Modules\CheckIncludeFile.cmake;C:\Program Files\CMake\share\cmake-3.27\Modules\CheckLibraryExists.cmake;C:\Program Files\CMake\share\cmake-3.27\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files\CMake\share\cmake-3.27\Modules\FindPackageMessage.cmake;C:\Program Files\CMake\share\cmake-3.27\Modules\FindThreads.cmake;C:\Program Files\CMake\share\cmake-3.27\Modules\GNUInstallDirs.cmake;C:\Program Files\CMake\share\cmake-3.27\Modules\Internal\CheckSourceCompiles.cmake;C:\Program Files\CMake\share\cmake-3.27\Modules\WriteBasicConfigVersionFile.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">C:\JoeBrighterWebsite\PortfolioProjects\GravitySim\build\_deps\glfw-build\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Building Custom Rule C:/JoeBrighterWebsite/PortfolioProjects/GravitySim/build/_deps/glfw-src/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/JoeBrighterWebsite/PortfolioProjects/GravitySim -BC:/JoeBrighterWebsite/PortfolioProjects/GravitySim/build --check-stamp-file C:/JoeBrighterWebsite/PortfolioProjects/GravitySim/build/_deps/glfw-build/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:\JoeBrighterWebsite\PortfolioProjects\GravitySim\build\_deps\glfw-src\src\glfw3.pc.in;C:\JoeBrighterWebsite\PortfolioProjects\GravitySim\build\_deps\glfw-src\src\glfw3Config.cmake.in;C:\JoeBrighterWebsite\PortfolioProjects\GravitySim\build\_deps\glfw-src\src\glfw_config.h.in;C:\Program Files\CMake\share\cmake-3.27\Modules\BasicConfigVersion-SameMajorVersion.cmake.in;C:\Program Files\CMake\share\cmake-3.27\Modules\CMakeDependentOption.cmake;C:\Program Files\CMake\share\cmake-3.27\Modules\CMakePackageConfigHelpers.cmake;C:\Program Files\CMake\share\cmake-3.27\Modules\CheckCSourceCompiles.cmake;C:\Program Files\CMake\share\cmake-3.27\Modules\CheckIncludeFile.cmake;C:\Program Files\CMake\share\cmake-3.27\Modules\CheckLibraryExists.cmake;C:\Program Files\CMake\share\cmake-3.27\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files\CMake\share\cmake-3.27\Modules\FindPackageMessage.cmake;C:\Program Files\CMake\share\cmake-3.27\Modules\FindThreads.cmake;C:\Program Files\CMake\share\cmake-3.27\Modules\GNUInstallDirs.cmake;C:\Program Files\CMake\share\cmake-3.27\Modules\Internal\CheckSourceCompiles.cmake;C:\Program Files\CMake\share\cmake-3.27\Modules\WriteBasicConfigVersionFile.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:\JoeBrighterWebsite\PortfolioProjects\GravitySim\build\_deps\glfw-build\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="C:\JoeBrighterWebsite\PortfolioProjects\GravitySim\build\ZERO_CHECK.vcxproj">
+      <Project>{24D43C6C-C78E-3792-A1DE-40F4993D9BA0}</Project>
+      <Name>ZERO_CHECK</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+    <ProjectReference Include="C:\JoeBrighterWebsite\PortfolioProjects\GravitySim\build\_deps\glfw-build\examples\boing.vcxproj">
+      <Project>{2A8F6BA5-4DD1-3894-AE34-B3145D0A5E1C}</Project>
+      <Name>boing</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\JoeBrighterWebsite\PortfolioProjects\GravitySim\build\_deps\glfw-build\tests\clipboard.vcxproj">
+      <Project>{F0960B4A-241E-3C02-AE6A-E922B93DCB20}</Project>
+      <Name>clipboard</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\JoeBrighterWebsite\PortfolioProjects\GravitySim\build\_deps\glfw-build\tests\cursor.vcxproj">
+      <Project>{B7728D42-3CE5-3297-B217-5D4591C17140}</Project>
+      <Name>cursor</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\JoeBrighterWebsite\PortfolioProjects\GravitySim\build\_deps\glfw-build\tests\empty.vcxproj">
+      <Project>{86F47731-AE5B-3E08-9DD9-6889D988C190}</Project>
+      <Name>empty</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\JoeBrighterWebsite\PortfolioProjects\GravitySim\build\_deps\glfw-build\tests\events.vcxproj">
+      <Project>{4CED5A73-FF0E-33E8-A33D-A941D582C9E1}</Project>
+      <Name>events</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\JoeBrighterWebsite\PortfolioProjects\GravitySim\build\_deps\glfw-build\tests\gamma.vcxproj">
+      <Project>{A6323F7F-A0EF-3823-AD42-82122EFECC12}</Project>
+      <Name>gamma</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\JoeBrighterWebsite\PortfolioProjects\GravitySim\build\_deps\glfw-build\examples\gears.vcxproj">
+      <Project>{1B81C730-A26F-3B9E-BE8C-335F7B01744D}</Project>
+      <Name>gears</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\JoeBrighterWebsite\PortfolioProjects\GravitySim\build\_deps\glfw-build\src\glfw.vcxproj">
+      <Project>{570ACD2B-6102-372B-9C3F-70145A185FA0}</Project>
+      <Name>glfw</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\JoeBrighterWebsite\PortfolioProjects\GravitySim\build\_deps\glfw-build\tests\glfwinfo.vcxproj">
+      <Project>{A5BAB988-7E39-30C5-9172-F16F57C90B06}</Project>
+      <Name>glfwinfo</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\JoeBrighterWebsite\PortfolioProjects\GravitySim\build\_deps\glfw-build\examples\heightmap.vcxproj">
+      <Project>{4942902A-655D-36FF-B0F9-C470085C1FCF}</Project>
+      <Name>heightmap</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\JoeBrighterWebsite\PortfolioProjects\GravitySim\build\_deps\glfw-build\tests\icon.vcxproj">
+      <Project>{153AFF30-AF0F-33DA-8FFE-6E45ACFD4E8D}</Project>
+      <Name>icon</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\JoeBrighterWebsite\PortfolioProjects\GravitySim\build\_deps\glfw-build\tests\iconify.vcxproj">
+      <Project>{A528E810-9687-3126-A34E-E77470C670E4}</Project>
+      <Name>iconify</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\JoeBrighterWebsite\PortfolioProjects\GravitySim\build\_deps\glfw-build\tests\inputlag.vcxproj">
+      <Project>{25DA5327-F026-3E80-AA49-B76BC09664F1}</Project>
+      <Name>inputlag</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\JoeBrighterWebsite\PortfolioProjects\GravitySim\build\_deps\glfw-build\tests\joysticks.vcxproj">
+      <Project>{3C0287C8-412C-3D0F-9DBF-4FC3B13EB79F}</Project>
+      <Name>joysticks</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\JoeBrighterWebsite\PortfolioProjects\GravitySim\build\_deps\glfw-build\tests\monitors.vcxproj">
+      <Project>{7196F436-6EB4-3688-BD81-1204FA57601D}</Project>
+      <Name>monitors</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\JoeBrighterWebsite\PortfolioProjects\GravitySim\build\_deps\glfw-build\tests\msaa.vcxproj">
+      <Project>{7A32C9AC-6F60-3990-99BE-56592072BC9E}</Project>
+      <Name>msaa</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\JoeBrighterWebsite\PortfolioProjects\GravitySim\build\_deps\glfw-build\examples\offscreen.vcxproj">
+      <Project>{7533C9C7-DA08-3286-A107-E6C0ADF840A9}</Project>
+      <Name>offscreen</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\JoeBrighterWebsite\PortfolioProjects\GravitySim\build\_deps\glfw-build\tests\opacity.vcxproj">
+      <Project>{C565A4D8-1825-3819-83A4-770ABC685A64}</Project>
+      <Name>opacity</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\JoeBrighterWebsite\PortfolioProjects\GravitySim\build\_deps\glfw-build\examples\particles.vcxproj">
+      <Project>{E6FD0C58-8530-321B-A696-BBB37F3B716A}</Project>
+      <Name>particles</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\JoeBrighterWebsite\PortfolioProjects\GravitySim\build\_deps\glfw-build\tests\reopen.vcxproj">
+      <Project>{196C6DA3-8BEE-36D0-B261-C7E2C276847E}</Project>
+      <Name>reopen</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\JoeBrighterWebsite\PortfolioProjects\GravitySim\build\_deps\glfw-build\examples\sharing.vcxproj">
+      <Project>{A93B0A22-B42A-33A3-B16B-16E3CD5830BC}</Project>
+      <Name>sharing</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\JoeBrighterWebsite\PortfolioProjects\GravitySim\build\_deps\glfw-build\examples\simple.vcxproj">
+      <Project>{C1566A37-CCA1-3C6C-843E-0164FF0E9076}</Project>
+      <Name>simple</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\JoeBrighterWebsite\PortfolioProjects\GravitySim\build\_deps\glfw-build\examples\splitview.vcxproj">
+      <Project>{220589C2-FBB6-3E7D-AECC-1068D11F9498}</Project>
+      <Name>splitview</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\JoeBrighterWebsite\PortfolioProjects\GravitySim\build\_deps\glfw-build\tests\tearing.vcxproj">
+      <Project>{E81079B7-D1A4-3CB2-985F-8DA73014030C}</Project>
+      <Name>tearing</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\JoeBrighterWebsite\PortfolioProjects\GravitySim\build\_deps\glfw-build\tests\threads.vcxproj">
+      <Project>{244EB577-9A1E-3E47-B42A-F6D86C2EBD90}</Project>
+      <Name>threads</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\JoeBrighterWebsite\PortfolioProjects\GravitySim\build\_deps\glfw-build\tests\timeout.vcxproj">
+      <Project>{6B3CD4C7-C090-33EF-A42B-17384313B982}</Project>
+      <Name>timeout</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\JoeBrighterWebsite\PortfolioProjects\GravitySim\build\_deps\glfw-build\tests\title.vcxproj">
+      <Project>{1350470B-B15F-3521-A24B-9BFCCD789C62}</Project>
+      <Name>title</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\JoeBrighterWebsite\PortfolioProjects\GravitySim\build\_deps\glfw-build\tests\triangle-vulkan.vcxproj">
+      <Project>{5583DEFB-D292-3AB5-BEFA-BC45C5C25475}</Project>
+      <Name>triangle-vulkan</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\JoeBrighterWebsite\PortfolioProjects\GravitySim\build\_deps\glfw-build\examples\wave.vcxproj">
+      <Project>{C749E68A-C8E5-3A94-A624-545A657CAB54}</Project>
+      <Name>wave</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\JoeBrighterWebsite\PortfolioProjects\GravitySim\build\_deps\glfw-build\tests\windows.vcxproj">
+      <Project>{7B1E229E-8DBA-3E63-BA89-AFAF096D990D}</Project>
+      <Name>windows</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

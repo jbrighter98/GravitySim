@@ -1,0 +1,46 @@
+{
+	"sources" : 
+	[
+		{
+			"file" : "C:/JoeBrighterWebsite/PortfolioProjects/GravitySim/build/_deps/glfw-subbuild/CMakeFiles/glfw-populate"
+		},
+		{
+			"file" : "C:/JoeBrighterWebsite/PortfolioProjects/GravitySim/build/_deps/glfw-subbuild/CMakeFiles/753fd82b1b6ab972dd70d606f383a007/glfw-populate.rule"
+		},
+		{
+			"file" : "C:/JoeBrighterWebsite/PortfolioProjects/GravitySim/build/_deps/glfw-subbuild/CMakeFiles/de3d3a99370e5ac576abdd36cbd2b7fe/glfw-populate-complete.rule"
+		},
+		{
+			"file" : "C:/JoeBrighterWebsite/PortfolioProjects/GravitySim/build/_deps/glfw-subbuild/CMakeFiles/d65887bdaa069fbbb70089d72a066df5/glfw-populate-build.rule"
+		},
+		{
+			"file" : "C:/JoeBrighterWebsite/PortfolioProjects/GravitySim/build/_deps/glfw-subbuild/CMakeFiles/d65887bdaa069fbbb70089d72a066df5/glfw-populate-configure.rule"
+		},
+		{
+			"file" : "C:/JoeBrighterWebsite/PortfolioProjects/GravitySim/build/_deps/glfw-subbuild/CMakeFiles/d65887bdaa069fbbb70089d72a066df5/glfw-populate-download.rule"
+		},
+		{
+			"file" : "C:/JoeBrighterWebsite/PortfolioProjects/GravitySim/build/_deps/glfw-subbuild/CMakeFiles/d65887bdaa069fbbb70089d72a066df5/glfw-populate-install.rule"
+		},
+		{
+			"file" : "C:/JoeBrighterWebsite/PortfolioProjects/GravitySim/build/_deps/glfw-subbuild/CMakeFiles/d65887bdaa069fbbb70089d72a066df5/glfw-populate-mkdir.rule"
+		},
+		{
+			"file" : "C:/JoeBrighterWebsite/PortfolioProjects/GravitySim/build/_deps/glfw-subbuild/CMakeFiles/d65887bdaa069fbbb70089d72a066df5/glfw-populate-patch.rule"
+		},
+		{
+			"file" : "C:/JoeBrighterWebsite/PortfolioProjects/GravitySim/build/_deps/glfw-subbuild/CMakeFiles/d65887bdaa069fbbb70089d72a066df5/glfw-populate-test.rule"
+		},
+		{
+			"file" : "C:/JoeBrighterWebsite/PortfolioProjects/GravitySim/build/_deps/glfw-subbuild/CMakeFiles/d65887bdaa069fbbb70089d72a066df5/glfw-populate-update.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : 
+		[
+			"glfw-populate"
+		],
+		"name" : "glfw-populate"
+	}
+}

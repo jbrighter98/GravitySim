@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\JoeBrighterWebsite\PortfolioProjects\GravitySim\build\CMakeFiles\922a64c8865acb3ae8362f97a83d8368\generate.stamp.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{0318DFA1-BCA5-3013-AD43-3852FF7AF82E}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
