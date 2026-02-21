@@ -13,7 +13,7 @@ It is also designed to build for web using Enscripten. Here is the following ste
 
 Outside project directory:
 
-Clone the Repo 
+Clone the Enscripten Repo 
 ```
 git clone https://github.com/emscripten-core/emsdk.git
 cd emsdk
