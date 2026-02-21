@@ -31,6 +31,9 @@
 #include "imgui_impl_opengl3.h"
 
 
+std::string VERSION = "1.0.0";
+
+
 enum ClickMode { FREE_PLACE, ANALYZE, ORBITAL_PLACE };
 ClickMode currentMode = FREE_PLACE;
 
@@ -765,7 +768,7 @@ int main() {
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     // Create Window
-    GLFWwindow* window = glfwCreateWindow(1420, 800, "N-Body Gravity Sim", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(1420, 800, ("N-Body Gravity Sim v" + VERSION).c_str(), NULL, NULL);
     if (!window) {
         glfwTerminate();
         return -1;
@@ -858,6 +861,9 @@ int main() {
     state->borderVAO = borderVAO;
     state->borderVBO = borderVBO;
 
+
+    std::cout << "N-Body Gravity Sim" << std::endl;
+    std::cout << "Version: " << VERSION << std::endl;
 
     /*** MAIN LOOP BEGIN ***/
 
