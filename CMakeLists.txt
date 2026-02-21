@@ -5,6 +5,15 @@ project(GravitySim VERSION 1.0)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+
+if(EMSCRIPTEN)
+    set(CMAKE_EXECUTABLE_SUFFIX ".html")
+    # Tell Emscripten to use WebGL 2 and bundle the shaders
+    set(EMSCRIPTEN_LINK_FLAGS "-s USE_GLFW=3 -s FULL_ES3=1 --preload-file shaders")
+    set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS "${EMSCRIPTEN_LINK_FLAGS}")
+endif()
+
+
 # 2. Find necessary packages (GLFW)
 # On Windows/MinGW, ensure GLFW is in your PATH or CMAKE_PREFIX_PATH
 include(FetchContent)

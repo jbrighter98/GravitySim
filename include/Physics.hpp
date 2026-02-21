@@ -10,31 +10,10 @@
 #include <string>
 #include <cstring>
 
-struct CelestialBody {
-    char ID[256];
-    glm::vec2 position;
-    glm::vec2 velocity;
-    glm::vec2 acceleration;
-    float mass;
-    float radius;
-    bool exists;
-    glm::vec4 color;
-    bool isDebris;
-    float lifeTime = 1.0f;    // Current life (1.0 = full, 0.0 = gone)
-    float decaySpeed = 0.0f;
-
-    CelestialBody(const char* id, glm::vec2 pos, float m, float r, glm::vec4 color, bool isDebris = false) 
-        : position(pos), velocity(0.0f, 0.0f), acceleration(0.0f, 0.0f), mass(m), radius(r), exists(true), color(color), isDebris(isDebris) {
-            std::strncpy(ID, id, 255);
-            ID[255] = '\0';
-            if (isDebris) {
-                decaySpeed = 0.2f + (static_cast<float>(rand()) / RAND_MAX) * 0.3f; // Random decay 2-5 seconds
-            }
-        }
-};
+#include "Globals.hpp"
 
 
-void handleCollisions(CelestialBody& a, CelestialBody& b, std::vector<CelestialBody>& newDebris, float G, CelestialBody*& selectedBody) {
+void handleCollisions(AppState* state, CelestialBody& a, CelestialBody& b, std::vector<CelestialBody>& newDebris, float G ) {
 
     if(!b.exists) {
         return;
@@ -162,8 +141,8 @@ void handleCollisions(CelestialBody& a, CelestialBody& b, std::vector<CelestialB
 
     a.isDebris = false;
 
-    if(selectedBody == &b || selectedBody == &a) {
-        selectedBody = &a; // Focus camera on the survivor
+    if(state->selectedBody == &b || state->selectedBody == &a) {
+        state->selectedBody = &a; // Focus camera on the survivor
     }
 
     b.exists = false; 
@@ -185,58 +164,58 @@ bool isOverlapping(const CelestialBody& a, const CelestialBody& b) {
 }
 
 
-void updatePhysics(std::vector<CelestialBody>& bodies, float deltaTime, CelestialBody*& selectedBody) {
+void updatePhysics(AppState* state, float deltaTime) {
     float G = 0.01f; // 0.01f default; Gravity constant (adjust this to make it "look" right)
 
     // Calculate Forces/Acceleration
 
     std::vector<CelestialBody> debris;
 
-    for (size_t i = 0; i < bodies.size(); ++i) {
+    for (size_t i = 0; i < state->bodies.size(); ++i) {
         glm::vec2 totalForce(0.0f);
 
-        for (size_t j = 0; j < bodies.size(); ++j) {
+        for (size_t j = 0; j < state->bodies.size(); ++j) {
             
             if (i == j) continue; // Don't pull yourself!
 
-            if (bodies[i].isDebris && bodies[j].isDebris) continue; // don't let debris interact with other debris (for performance).
+            if (state->bodies[i].isDebris && state->bodies[j].isDebris) continue; // don't let debris interact with other debris (for performance).
 
 
-            if (isOverlapping(bodies[i], bodies[j])) {
+            if (isOverlapping(state->bodies[i], state->bodies[j])) {
                 // Handle collision here!
-                handleCollisions(bodies[i], bodies[j], debris, G, selectedBody);
+                handleCollisions(state, state->bodies[i], state->bodies[j], debris, G);
             }
 
-            glm::vec2 direction = bodies[j].position - bodies[i].position;
+            glm::vec2 direction = state->bodies[j].position - state->bodies[i].position;
             float distanceSq = glm::dot(direction, direction); // r^2
             
             // Softening factor to prevent infinite force when bodies overlap
             float softening = 0.01f; 
-            float forceMagnitude = G * (bodies[i].mass * bodies[j].mass) / (distanceSq + softening);
+            float forceMagnitude = G * (state->bodies[i].mass * state->bodies[j].mass) / (distanceSq + softening);
 
             totalForce += glm::normalize(direction) * forceMagnitude;
         }
         // F = ma -> a = F/m. (If mass is 1, acceleration = force)
-        bodies[i].acceleration = totalForce / bodies[i].mass;
+        state->bodies[i].acceleration = totalForce / state->bodies[i].mass;
     }
 
     if(!debris.empty()){
         
         // Save selectedBody's ID before potential reallocation
         char selectedID[256] = "";
-        if (selectedBody) {
-            std::strncpy(selectedID, selectedBody->ID, 255);
+        if (state->selectedBody) {
+            std::strncpy(selectedID, state->selectedBody->ID, 255);
             selectedID[255] = '\0';
         }
 
-        bodies.insert(bodies.end(), debris.begin(), debris.end());
+        state->bodies.insert(state->bodies.end(), debris.begin(), debris.end());
 
         // Re-find selectedBody by ID after vector reallocation
-        selectedBody = nullptr;
+        state->selectedBody = nullptr;
         if (selectedID[0] != '\0') {
-            for (auto& body : bodies) {
+            for (auto& body : state->bodies) {
                 if (std::strcmp(body.ID, selectedID) == 0) {
-                    selectedBody = &body;
+                    state->selectedBody = &body;
                     break;
                 }
             }
@@ -245,7 +224,7 @@ void updatePhysics(std::vector<CelestialBody>& bodies, float deltaTime, Celestia
     
 
     // Integration (Move the bodies)
-    for (auto& body : bodies) {
+    for (auto& body : state->bodies) {
         body.velocity += body.acceleration * deltaTime;
         body.position += body.velocity * deltaTime;
     }

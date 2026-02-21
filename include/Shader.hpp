@@ -14,7 +14,7 @@ public:
     unsigned int ID;
 
     Shader(const char* vertexPath, const char* fragmentPath) {
-        // 1. Retrieve the source code from filePaths
+        // Retrieve the source code from filePaths
         std::string vertexCode, fragmentCode;
         std::ifstream vShaderFile, fShaderFile;
         vShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
@@ -31,25 +31,37 @@ public:
         } catch (std::ifstream::failure& e) {
             std::cout << "ERROR::SHADER::FILE_NOT_SUCCESSFULLY_READ" << std::endl;
         }
-        const char* vShaderCode = vertexCode.c_str();
-        const char* fShaderCode = fragmentCode.c_str();
 
-        // 2. Compile shaders
+        std::string versionString;
+        #ifdef __EMSCRIPTEN__
+            versionString = "#version 300 es\nprecision mediump float;\n";
+        #else
+            versionString = "#version 460 core\n";
+        #endif
+
+        std::string vShaderCode = versionString + vertexCode;
+        std::string fShaderCode = versionString + fragmentCode;
+
+        // When loading your shader code:
+        const char* vShaderCodePtr = vShaderCode.c_str();
+        const char* fShaderCodePtr = fShaderCode.c_str();
+
+        // Compile shaders
         unsigned int vertex, fragment;
         vertex = glCreateShader(GL_VERTEX_SHADER);
-        glShaderSource(vertex, 1, &vShaderCode, NULL);
+        glShaderSource(vertex, 1, &vShaderCodePtr, NULL);
         glCompileShader(vertex);
         checkCompileErrors(vertex, "VERTEX");
 
         fragment = glCreateShader(GL_FRAGMENT_SHADER);
-        glShaderSource(fragment, 1, &fShaderCode, NULL);
+        glShaderSource(fragment, 1, &fShaderCodePtr, NULL);
         glCompileShader(fragment);
         checkCompileErrors(fragment, "FRAGMENT");
 
         // Shader Program
         ID = glCreateProgram();
-        glAttachShader(ID, vertex);   // <--- ADD THIS
-        glAttachShader(ID, fragment); // <--- ADD THIS
+        glAttachShader(ID, vertex);
+        glAttachShader(ID, fragment);
         glLinkProgram(ID);
         checkCompileErrors(ID, "PROGRAM");
 

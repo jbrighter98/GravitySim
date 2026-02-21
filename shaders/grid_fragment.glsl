@@ -1,4 +1,3 @@
-#version 460 core
 out vec4 FragColor;
 
 uniform mat4 invView;

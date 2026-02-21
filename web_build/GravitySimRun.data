@@ -1,0 +1,68 @@
+out vec4 FragColor;
+
+uniform vec4 uColor;
+
+void main() {
+    FragColor = uColor; 
+}out vec4 FragColor;
+
+uniform mat4 invView;
+uniform mat4 invProj;
+uniform float zoom;
+
+void main() {
+    // 1. Convert screen pixel back to world coordinates
+    vec2 ndc = (gl_FragCoord.xy / vec2(1200, 800)) * 2.0 - 1.0; // Use actual window width/height
+    vec4 worldPos = invView * invProj * vec4(ndc, 0.0, 1.0);
+    
+    // 2. Create the grid pattern
+    float gridSize = 1.0; 
+    vec2 grid = abs(fract(worldPos.xy / gridSize - 0.5) - 0.5) / fwidth(worldPos.xy / gridSize);
+    float line = min(grid.x, grid.y);
+    
+    // 3. Draw thin gray lines
+    float color = 1.0 - min(line, 1.0);
+    if (color < 0.1) discard; // Only keep the lines, transparent elsewhere
+    
+    FragColor = vec4(0.2, 0.2, 0.2, color * 0.5); // Gray with some alpha
+}out vec4 FragColor;
+
+uniform mat4 invView;
+uniform mat4 invProj;
+uniform vec2 u_resolution;
+
+void main() {
+    // 1. Map pixel coordinates (0 to Width) to NDC (-1 to 1)
+    vec2 ndc = (gl_FragCoord.xy / u_resolution) * 2.0 - 1.0;
+
+    // 2. "Unproject" to find where this pixel is in the WORLD
+    // Multiplying by the inverse of our camera matrices reverses the camera move
+    vec4 worldPos = invView * invProj * vec4(ndc, 0.0, 1.0);
+    
+    // 3. Draw a line every 1.0 unit
+    vec2 grid = abs(fract(worldPos.xy - 0.5) - 0.5) / fwidth(worldPos.xy);
+    float line = min(grid.x, grid.y);
+
+    // 4. Create the final color (Gray)
+    float alpha = 1.0 - smoothstep(0.0, 1.0, line);
+    
+    // Don't draw if it's not a line (makes it transparent for the background)
+    if (alpha < 0.1) discard;
+
+    FragColor = vec4(0.5, 0.5, 0.5, alpha * 0.5); 
+    //FragColor = vec4(1.0, 0.0, 0.0, 1.0);
+}layout (location = 0) in vec3 aPos;
+
+void main() {
+    // We pass the position directly. 
+    // Since our vertices are -1 to 1, this covers the whole screen.
+    gl_Position = vec4(aPos, 1.0);
+}layout (location = 0) in vec3 aPos;
+
+uniform mat4 view;
+uniform mat4 model; // Move the circle
+uniform mat4 projection; // Handle window stretching
+
+void main() {
+    gl_Position = projection * view * model * vec4(aPos, 1.0);
+}
