@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 project(GravitySim VERSION 1.0)
 
-# 1. Set C++ Standard
+# Set C++ Standard
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
@@ -14,7 +14,7 @@ if(EMSCRIPTEN)
 endif()
 
 
-# 2. Find necessary packages (GLFW)
+# Find necessary packages (GLFW)
 # On Windows/MinGW, ensure GLFW is in your PATH or CMAKE_PREFIX_PATH
 include(FetchContent)
 
@@ -30,7 +30,7 @@ set(GLFW_INSTALL OFF CACHE BOOL "" FORCE)
 
 FetchContent_MakeAvailable(glfw)
 
-# 3. Include directories
+# Include directories
 # This tells the compiler where to look for your .h/.hpp files
 include_directories(include)
 # If using GLM as header-only, add its path here too
@@ -38,7 +38,7 @@ include_directories(include)
 
 find_package(OpenGL REQUIRED)
 
-# 4. Identify Source Files
+# Identify Source Files
 
 set(IMGUI_SOURCES
     deps/imgui.cpp
@@ -61,13 +61,11 @@ add_executable(${PROJECT_NAME} ${SOURCES})
 target_include_directories(${PROJECT_NAME} PUBLIC deps)
 
 
-# 5. Create the Executable
-
-# 6. Link Libraries
+# Link Libraries
 # OpenGL is provided by the OS; glfw is the windowing library
 target_link_libraries(${PROJECT_NAME} glfw OpenGL::GL)
 
-# 7. Copy Shaders to Build Folder (Quality of Life)
+# Copy Shaders to Build Folder (Quality of Life)
 # This ensures your .glsl files are next to your .exe so they load correctly
 file(COPY shaders/ DESTINATION ${CMAKE_BINARY_DIR}/shaders)
 

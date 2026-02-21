@@ -13,7 +13,7 @@
 #include "Globals.hpp"
 
 
-void handleCollisions(AppState* state, CelestialBody& a, CelestialBody& b, std::vector<CelestialBody>& newDebris, float G ) {
+void handleCollisions(AppState* state, CelestialBody& a, CelestialBody& b, std::vector<CelestialBody>& newDebris ) {
 
     if(!b.exists) {
         return;
@@ -44,12 +44,16 @@ void handleCollisions(AppState* state, CelestialBody& a, CelestialBody& b, std::
 
     float energyThreshold = 1.0f;
     if(m1 >= m2) {
-        energyThreshold = (3 * G * std::pow(m1, 2)) / (5 * a.radius);
+        energyThreshold = (float)((3 * state->G * std::pow(m1, 2)) / (5 * a.radius));
     }
     else {
-        energyThreshold = (3 * G * std::pow(m2, 2)) / (5 * b.radius);
+        energyThreshold = (float)((3 * state->G * std::pow(m2, 2)) / (5 * b.radius));
         // Update name if B is more massive, since it will be the "survivor"
+#ifdef __EMSCRIPTEN__
         std::strncpy(a.ID, b.ID, 255);
+#else
+        strncpy_s(a.ID, b.ID, 255);
+#endif
         a.ID[255] = '\0';
     }
     
@@ -90,7 +94,7 @@ void handleCollisions(AppState* state, CelestialBody& a, CelestialBody& b, std::
         // Calculate the Bias (Max 20 degrees)
         // If m2 is smaller, bias moves towards B. If m1 is smaller, bias moves towards A.
         float massFactor = (a.mass - b.mass) / (a.mass + b.mass);
-        float biasOffset = massFactor * glm::radians(20.0f);
+        float biasOffset = massFactor * glm::radians(10.0f);
 
         // Eject Particles
 
@@ -165,7 +169,6 @@ bool isOverlapping(const CelestialBody& a, const CelestialBody& b) {
 
 
 void updatePhysics(AppState* state, float deltaTime) {
-    float G = 0.01f; // 0.01f default; Gravity constant (adjust this to make it "look" right)
 
     // Calculate Forces/Acceleration
 
@@ -183,7 +186,7 @@ void updatePhysics(AppState* state, float deltaTime) {
 
             if (isOverlapping(state->bodies[i], state->bodies[j])) {
                 // Handle collision here!
-                handleCollisions(state, state->bodies[i], state->bodies[j], debris, G);
+                handleCollisions(state, state->bodies[i], state->bodies[j], debris);
             }
 
             glm::vec2 direction = state->bodies[j].position - state->bodies[i].position;
@@ -191,7 +194,7 @@ void updatePhysics(AppState* state, float deltaTime) {
             
             // Softening factor to prevent infinite force when bodies overlap
             float softening = 0.01f; 
-            float forceMagnitude = G * (state->bodies[i].mass * state->bodies[j].mass) / (distanceSq + softening);
+            float forceMagnitude = state->G * (state->bodies[i].mass * state->bodies[j].mass) / (distanceSq + softening);
 
             totalForce += glm::normalize(direction) * forceMagnitude;
         }
@@ -204,7 +207,11 @@ void updatePhysics(AppState* state, float deltaTime) {
         // Save selectedBody's ID before potential reallocation
         char selectedID[256] = "";
         if (state->selectedBody) {
+#ifdef __EMSCRIPTEN__
             std::strncpy(selectedID, state->selectedBody->ID, 255);
+#else
+            strncpy_s(selectedID, state->selectedBody->ID, 255);
+#endif
             selectedID[255] = '\0';
         }
 

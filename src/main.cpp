@@ -38,9 +38,14 @@ ClickMode currentMode = FREE_PLACE;
 double mouseX = 0.0;
 double mouseY = 0.0;
 bool g_leftMouseButtonPressed = false;
+bool g_rightMouseButtonPressed = false;
 bool startLeftPress = false;
+bool startRightPress = false;
 
 bool isPaused = false;
+bool debrisFade = true;
+
+bool clockwiseOrbit = true;
 
 Camera camera;
 
@@ -54,6 +59,12 @@ void processInput(GLFWwindow* window, Camera& cam, float dt) {
 }
 
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
+    
+    ImGuiIO& io = ImGui::GetIO();
+    if (io.WantCaptureMouse) {
+        return; // ImGui handles this scroll; don't zoom the camera
+    }
+    
     float zoomSpeed = 0.1f;
     
     if (yoffset > 0) {
@@ -64,7 +75,7 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
 
     // --- The Cap ---
     float minZoom = 0.2f; // How close can you get?
-    float maxZoom = 10.0f; // How far can you see?
+    float maxZoom = 20.0f; // How far can you see?
     
     camera.zoom = glm::clamp(camera.zoom, minZoom, maxZoom);
 }
@@ -86,6 +97,17 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
         g_leftMouseButtonPressed = false;
         startLeftPress = false;
     }
+
+    if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS) {
+        
+        g_rightMouseButtonPressed = true;
+    
+    }
+    else if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_RELEASE)
+    {
+        g_rightMouseButtonPressed = false;
+        startRightPress = false;
+    }
 }
 
 
@@ -104,9 +126,52 @@ bool checkIDExists(AppState* state, const char* id) {
     return false;
 }
 
+void DrawBorder(AppState* state, glm::vec3 color, float thickness) {
+    state->myShader->use();
+    
+    // Identity matrices mean "don't move it, just use NDC coordinates (-1 to 1)"
+    glm::mat4 identity = glm::mat4(1.0f);
+    state->myShader->setMat4("view", identity);
+    state->myShader->setMat4("projection", identity);
+    state->myShader->setMat4("model", identity);
+    state->myShader->setVec4("uColor", glm::vec4(color, 1.0f));
+
+    glLineWidth(thickness); 
+    glBindVertexArray(state->borderVAO);
+    glDrawArrays(GL_LINE_LOOP, 0, 4);
+}
 
 
+void validateID(AppState* state, char (&newID)[256]) {
 
+    // Initialize newID with the base idInput
+#ifdef __EMSCRIPTEN__
+    std::strncpy(newID, state->idInput, 255);
+#else
+    strncpy_s(newID, state->idInput, 255);
+#endif
+    newID[255] = '\0';
+
+    // If the ID already exists, append a suffix
+    if(checkIDExists(state, newID)) {
+        std::cout << "ID " << newID << " already exists" << std::endl;
+        int count = 1;
+        while(true) {
+            char tempID[256];
+            snprintf(tempID, sizeof(tempID), "%s_%d", state->idInput, count);
+            if(!checkIDExists(state, tempID)) {
+#ifdef __EMSCRIPTEN__
+                std::strncpy(newID, tempID, 255);
+#else
+                strncpy_s(newID, tempID, 255);
+#endif
+                newID[255] = '\0';
+                break;
+            }
+            count++;
+        }
+    }
+}
 
 
 
@@ -136,20 +201,21 @@ void UpdateFrame(void* arg) {
         return;
     }
 
-    //GLFWwindow* window = (GLFWwindow*)arg;
-
     // Input handling
+#ifndef __EMSCRIPTEN__
+    // Check for Escape key to close the window only in native builds (since Emscripten doesn't support this)
     if (glfwGetKey(state->window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
         std::cout << "Exiting..." << std::endl;
         glfwSetWindowShouldClose(state->window, true);
     }
+#endif
 
     // Rendering commands
     glClearColor(0.05f, 0.05f, 0.1f, 1.0f); // Deep space blue/black
     glClear(GL_COLOR_BUFFER_BIT);
 
 
-    float currentFrame = glfwGetTime();
+    float currentFrame = (float)glfwGetTime();
     float deltaTime = currentFrame - state->lastFrame;
     state->lastFrame = currentFrame;
 
@@ -196,7 +262,11 @@ void UpdateFrame(void* arg) {
 
     char selectedID[256] = "";
     if (state->selectedBody) {
+#ifdef __EMSCRIPTEN__
         strncpy(selectedID, state->selectedBody->ID, 255);
+#else
+        strncpy_s(selectedID, state->selectedBody->ID, 255);
+#endif
         selectedID[255] = '\0';
     }
 
@@ -251,6 +321,69 @@ void UpdateFrame(void* arg) {
     }
 
 
+    if (currentMode == ORBITAL_PLACE && state->isPlacingOrbit && state->orbitalAnchor) {
+        float r = glm::distance(glm::vec2(worldX, worldY), state->orbitalAnchor->position);
+        float x = worldX;
+        float y = worldY;
+        if(r <= state->orbitalAnchor->radius + (0.05f * sqrt(state->massInput)) + 0.05f) {
+            float d = (state->orbitalAnchor->radius + (0.05f * sqrt(state->massInput)) + 0.05f) - r;
+            float angle = atan2(worldY - state->orbitalAnchor->position.y, worldX - state->orbitalAnchor->position.x);
+            x = worldX + cos(angle) * d;
+            y = worldY + sin(angle) * d;
+            r = state->orbitalAnchor->radius + (0.05f * sqrt(state->massInput)) + 0.05f; // Prevent placing inside the anchor
+        }
+        // Draw the Ring
+        // ring should be just 2 
+        state->myShader->use();
+        glm::mat4 ringModel = glm::translate(glm::mat4(1.0f), glm::vec3(state->orbitalAnchor->position, 0.0f));
+        ringModel = glm::scale(ringModel, glm::vec3(r, r, 1.0f));
+        state->myShader->setMat4("model", ringModel);
+
+        glm::vec4 renderColor = glm::vec4(state->colorInput[0], state->colorInput[1], state->colorInput[2], 0.3f);
+
+        state->myShader->setVec4("uColor", renderColor); // Faint color for the ring
+        state->bodyShape->drawLines();
+
+
+        // Draw the Ghost Planet at mouse position with limited radius
+        glm::mat4 modelMouse = glm::mat4(1.0f);
+
+        modelMouse = glm::translate(modelMouse, glm::vec3(x, y, 0.0f));
+        modelMouse = glm::scale(modelMouse, glm::vec3(0.05f * sqrt(state->massInput), 0.05f * sqrt(state->massInput), 1.0f));
+        
+        state->myShader->setMat4("model", modelMouse);
+
+        state->myShader->setVec4("uColor", renderColor);
+
+        state->bodyShape->draw();
+    }
+
+
+    // right-click to remove clicked body
+    if (g_rightMouseButtonPressed) {
+
+         // right click to remove clicked body
+        if(ImGui::GetIO().WantCaptureMouse) {
+            startRightPress = true;
+        }
+        else if(!startRightPress){
+
+            for (auto& body : state->bodies) {
+                float radius = body.radius * 1.2f; // Click area is slightly larger than the body
+                if (glm::distance2(glm::vec2(worldX, worldY), body.position) < radius * radius) {
+                    body.exists = false; // Mark for deletion
+                    std::cout << "Removed body: " << body.ID << std::endl;
+                    break; // Only remove one body per click
+                }
+            }
+
+            startRightPress = true;
+        }
+
+    }
+
+
+
     // Click to add Body
     if (g_leftMouseButtonPressed) {
         
@@ -262,27 +395,7 @@ void UpdateFrame(void* arg) {
             if(currentMode == FREE_PLACE) {
 
                 char newID[256];
-                // Initialize newID with the base idInput
-                strncpy(newID, state->idInput, 255);
-                newID[255] = '\0';
-
-                // If the ID already exists, append a suffix
-                if(checkIDExists(state, newID)) {
-                    int count = 1;
-                    while(true) {
-                        char tempID[256];
-                        snprintf(tempID, sizeof(tempID), "%s_%d", state->idInput, count);
-                        std::cout << "ID already exists. Trying: " << tempID << std::endl;
-                        if(!checkIDExists(state, tempID)) {
-                            strncpy(newID, tempID, 255);
-                            newID[255] = '\0';
-                            break;
-                        }
-                        count++;
-                    }
-                }
-
-                std::cout << "Final ID for new body: " << newID << std::endl;
+                validateID(state, newID);
 
                 CelestialBody newBody(newID, glm::vec2(worldX, worldY), state->massInput, 0.05f * sqrt(state->massInput), glm::vec4(state->colorInput[0], state->colorInput[1], state->colorInput[2], 1.0f));
                 newBody.velocity = glm::vec2(state->velocityInput[0], state->velocityInput[1]);
@@ -290,6 +403,10 @@ void UpdateFrame(void* arg) {
                 state->bodies.push_back(newBody);
 
                 std::cout << "Added Body at: " << worldX << ", " << worldY << std::endl;
+                std::cout << "ID: " << newID << std::endl;
+                std::cout << "Mass: " << state->massInput << std::endl;
+                std::cout << "Radius: " << 0.05f * sqrt(state->massInput) << std::endl;
+                std::cout << "Initial Velocity: " << newBody.velocity.x << ", " << newBody.velocity.y << std::endl;
                 std::cout << "Object Color: " << newBody.color[0] << ", " << newBody.color[1] << ", " << newBody.color[2] << std::endl;
 
                 startLeftPress = true;
@@ -310,13 +427,77 @@ void UpdateFrame(void* arg) {
                 }
                 startLeftPress = true;
             }
+            else if(currentMode == ORBITAL_PLACE) {
+
+                if(!state->isPlacingOrbit) {
+                    state->orbitalAnchor = nullptr; // Clear previous anchor
+
+                    for (auto& body : state->bodies) {
+                        float dist = glm::distance(glm::vec2(worldX, worldY), body.position);
+                        if (dist < body.radius + 0.05f) {
+                            state->orbitalAnchor = &body;
+                            state->isPlacingOrbit = true;
+                            isPaused = true; // Pause simulation while placing orbit
+                            break;
+                        }
+                    }
+                }
+                else if(state->isPlacingOrbit) {
+
+                    char newID[256];
+                    validateID(state, newID);
+
+                    float r = glm::distance(glm::vec2(worldX, worldY), state->orbitalAnchor->position);
+                    float x = worldX;
+                    float y = worldY;
+                    if(r <= state->orbitalAnchor->radius + (0.05f * sqrt(state->massInput)) + 0.05f) {
+                        float d = (state->orbitalAnchor->radius + (0.05f * sqrt(state->massInput)) + 0.05f) - r;
+                        float angle = atan2(worldY - state->orbitalAnchor->position.y, worldX - state->orbitalAnchor->position.x);
+                        x = worldX + cos(angle) * d;
+                        y = worldY + sin(angle) * d;
+                        r = state->orbitalAnchor->radius + (0.05f * sqrt(state->massInput)) + 0.05f; // Prevent placing inside the anchor
+                    }
+                    float vMag = sqrt((state->G * state->orbitalAnchor->mass) / r);
+                    
+                    glm::vec2 radialDir = glm::normalize(glm::vec2(worldX, worldY) - state->orbitalAnchor->position);
+                    if(clockwiseOrbit) {
+                        radialDir = -radialDir; // Flip direction for counter-clockwise
+                    }
+                    glm::vec2 velocity = (glm::vec2(-radialDir.y, radialDir.x) * vMag) + state->orbitalAnchor->velocity; // Add anchor's velocity for moving bodies
+
+                    // Create the body
+
+                    CelestialBody newBody(newID, glm::vec2(x, y), state->massInput, 0.05f * sqrt(state->massInput), glm::vec4(state->colorInput[0], state->colorInput[1], state->colorInput[2], 1.0f));
+                    newBody.velocity = velocity;
+
+                    std::cout << "Added Body at: " << x << ", " << y << std::endl;
+                    std::cout << "Orbiting around: " << state->orbitalAnchor->ID << std::endl;
+                    std::cout << "ID: " << newID << std::endl;
+                    std::cout << "Mass: " << state->massInput << std::endl;
+                    std::cout << "Radius: " << 0.05f * sqrt(state->massInput) << std::endl;
+                    std::cout << "Initial Velocity: " << newBody.velocity.x << ", " << newBody.velocity.y << std::endl;
+                    std::cout << "Object Color: " << newBody.color[0] << ", " << newBody.color[1] << ", " << newBody.color[2] << std::endl;
+
+                    
+                    state->bodies.push_back(newBody);
+
+                    // Reset state
+                    state->isPlacingOrbit = false;
+                    state->orbitalAnchor = nullptr;
+                    isPaused = false; // Resume the simulation
+                }
+                startLeftPress = true;
+            }
+
+
+
         }
     }
 
 
     for(auto& body : state->bodies) {
 
-        if (body.isDebris) {
+        if (body.isDebris && debrisFade) {
             body.lifeTime -= body.decaySpeed * simulationDT;
 
             // If it's fully faded, mark it for removal
@@ -343,6 +524,14 @@ void UpdateFrame(void* arg) {
         state->bodyShape->draw();
     }
 
+    if(isPaused) {
+        DrawBorder(state, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f);
+    }
+    else {
+        DrawBorder(state, glm::vec3(0.1f, 0.1f, 0.1f), 1.0f);
+    }
+    
+
 
     ///*** UI INPUTS START *** /
 
@@ -351,68 +540,112 @@ void UpdateFrame(void* arg) {
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
 
-    // Define the Menu (at the bottom)
-    ImGui::SetNextWindowPos(ImVec2(10, height - 120), ImGuiCond_Always);
-    ImGui::SetNextWindowSize(ImVec2(width - 20, 130));
 
-    ImGui::Begin("Simulation Controls", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
+    // --- CLICK CONTROLS BEGIN ---
 
-    // ID input
-    ImGui::InputText( "Name", state->idInput, sizeof(state->idInput) );
+    ImGui::SetNextWindowPos(ImVec2(10, 60), ImGuiCond_FirstUseEver);
+    ImGui::SetNextWindowSize(ImVec2(300, 300));
 
-    // Mass Input
-    ImGui::InputFloat("Mass", &state->massInput, 1.0f, 1.0f);
+    ImGui::Begin("Simulation Controls", NULL, ImGuiWindowFlags_NoResize);
 
-    // Velocity Inputs
-    ImGui::InputFloat2("Initial Velocity (X, Y)", state->velocityInput);
+    if (ImGui::Button("Analyze")) {
+        state->selectedBody = nullptr;
+        state->isPlacingOrbit = false; // Reset any ongoing orbital placement
+        state->orbitalAnchor = nullptr; // Clear any previous anchor
+        currentMode = ANALYZE;
+    }
+    ImGui::SameLine();
+    if (ImGui::Button("Free Place")) {
+        state->selectedBody = nullptr;
+        state->isPlacingOrbit = false; // Reset any ongoing orbital placement
+        state->orbitalAnchor = nullptr; // Clear any previous anchor
+        currentMode = FREE_PLACE;
+    }
+    ImGui::SameLine();
+    if (ImGui::Button("Orbital Place")) {
+        state->selectedBody = nullptr;
+        state->isPlacingOrbit = false; // Reset any ongoing orbital placement
+        state->orbitalAnchor = nullptr; // Clear any previous anchor
+        currentMode = ORBITAL_PLACE;
+    }
 
-    ImGui::SameLine(); // Put the button on the same line
-
-    // Change the Click Mode button text based on state
-    char* clickButtonLabel = "";
     if(currentMode == ANALYZE) {
-        clickButtonLabel = "Analyze";
+        ImGui::TextWrapped("Analyze Mode");
+        ImGui::TextWrapped("Click on a body to analyze its properties.");
     }
     else if(currentMode == FREE_PLACE) {
-        clickButtonLabel = "Free Place";
+        ImGui::TextWrapped("Free Place Mode");
+        ImGui::TextWrapped("Click anywhere to place a new body with the specified properties below.");
+
+        ImGui::InputText( "Name", state->idInput, sizeof(state->idInput) );
+        ImGui::InputFloat("Mass", &state->massInput, 1.0f, 1.0f);
+
+        ImGui::InputFloat2("V0 (X, Y)", state->velocityInput);
+
+        ImGui::ColorEdit3("Body Color", state->colorInput);
     }
     else if(currentMode == ORBITAL_PLACE) {
-        clickButtonLabel = "Orbital Place";
-    }
+        ImGui::TextWrapped("Orbital Place Mode");
+        ImGui::TextWrapped("Click an existing body to place a new body in a circular orbit around it.");
 
-    if (ImGui::Button(clickButtonLabel)) {
-        if(currentMode == ANALYZE) {
-            state->selectedBody = nullptr;
-            currentMode = FREE_PLACE;
-        }
-        else if(currentMode == FREE_PLACE) {
-            state->selectedBody = nullptr;
-            currentMode = ORBITAL_PLACE;
-        }
-        else if(currentMode == ORBITAL_PLACE) {
-            state->selectedBody = nullptr;
-            currentMode = ANALYZE;
+        ImGui::InputText( "Name", state->idInput, sizeof(state->idInput) );
+        ImGui::InputFloat("Mass", &state->massInput, 1.0f, 1.0f);
+
+        ImGui::ColorEdit3("Body Color", state->colorInput);
+
+        const char* dirButtonLabel = clockwiseOrbit ? "CLOCKWISE" : "COUNTER-CLOCKWISE";
+        if (ImGui::Button(dirButtonLabel, ImVec2(200, 30))) {
+            clockwiseOrbit = !clockwiseOrbit;
         }
     }
-
-    ImGui::SameLine(); // Put the button on the same line
-
-    // Clear Button
-    if (ImGui::Button("Clear All Bodies")) {
-        state->bodies.clear();
-        state->selectedBody = nullptr;
-    }
-
-    // Color Inputs
-    ImGui::ColorEdit3("Body Color", state->colorInput);
 
     ImGui::End();
 
+    // --- CLICK CONTROLS END ---
 
-    // --- PAUSE / PLAY BUTTON ---
+    // --- BODIES LIST BEGIN ---
+
+    ImGui::SetNextWindowPos(ImVec2(10, 380), ImGuiCond_FirstUseEver);
+    ImGui::SetNextWindowSize(ImVec2(300, 200));
+
+    ImGui::Begin("Current Bodies", NULL, ImGuiWindowFlags_AlwaysAutoResize); 
+
+    if (ImGui::BeginListBox("##BodyList", ImVec2(-FLT_MIN, 0.0f))) {
+        
+        if(state->bodies.empty()) {
+            ImGui::TextWrapped("No bodies in the simulation.");
+        }
+        else {
+
+            for (auto& body : state->bodies) {
+
+                if(body.isDebris) continue; // Skip debris in the list
+
+                const bool isSelected = (state->selectedBody && strcmp(state->selectedBody->ID, body.ID) == 0);
+
+                // ImGui::Selectable() returns true if the item is clicked
+                if (ImGui::Selectable(body.ID, isSelected))
+                {
+                    currentMode = ANALYZE; // Switch to Analyze mode when a body is selected from the list
+                    state->selectedBody = &body; // Update the selected body pointer
+                }
+                
+            }
+        }
+        
+        
+        ImGui::EndListBox();
+    }
+
+    ImGui::End();
+
+    // --- BODIES LIST END ---
+
+    // --- GLOBAL SETTINGS BEGIN ---
+
     // Set position to Top-Left
     ImGui::SetNextWindowPos(ImVec2(10, 10), ImGuiCond_Always);
-    ImGui::SetNextWindowSize(ImVec2(200, 50));
+    ImGui::SetNextWindowSize(ImVec2(500, 50));
 
     ImGui::Begin("Playback Controls", NULL, 
         ImGuiWindowFlags_NoTitleBar | 
@@ -425,6 +658,8 @@ void UpdateFrame(void* arg) {
 
     if (ImGui::Button(buttonLabel, ImVec2(100, 30))) {
         isPaused = !isPaused;
+        state->isPlacingOrbit = false; // Reset any ongoing orbital placement
+        state->orbitalAnchor = nullptr; // Clear any previous anchor
     }
 
     if (isPaused) {
@@ -435,10 +670,36 @@ void UpdateFrame(void* arg) {
         }
     }
 
+    ImGui::SameLine();
+
+    if (ImGui::Button("Clear All Bodies", ImVec2(150, 30))) {
+        state->selectedBody = nullptr;
+        state->isPlacingOrbit = false;
+        state->orbitalAnchor = nullptr;
+        state->bodies.clear();
+        std::cout << "Cleared all bodies from the simulation." << std::endl;
+    }
+
+    ImGui::SameLine();
+
+    if (ImGui::Checkbox("Debris Fade", &debrisFade))
+    {
+        std::cout << "Debris Fade: " << debrisFade << std::endl;
+    }
+
+    // Create input for G (Gravitational Constant)
+    ImGui::SameLine();
+    ImGui::Text("|   G:");
+    ImGui::SameLine();
+    ImGui::InputFloat("G", &state->G, 0.01f, 0.01f, "%.3f");
+
     ImGui::End();
 
+    // --- GLOBAL SETTINGS END ---
+    
+
     if (state->selectedBody && state->selectedBody->exists) {
-        ImGui::SetNextWindowPos(ImVec2(width - 260, 10), ImGuiCond_FirstUseEver);
+        ImGui::SetNextWindowPos(ImVec2((float)(width - 260), 10), ImGuiCond_FirstUseEver);
         ImGui::SetNextWindowSize(ImVec2(250, 200));
 
         ImGui::Begin("Body Analysis", NULL, ImGuiWindowFlags_AlwaysAutoResize);
@@ -504,7 +765,7 @@ int main() {
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     // Create Window
-    GLFWwindow* window = glfwCreateWindow(1200, 800, "N-Body Gravity Sim", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(1420, 800, "N-Body Gravity Sim", NULL, NULL);
     if (!window) {
         glfwTerminate();
         return -1;
@@ -542,8 +803,26 @@ int main() {
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 
-    // Initialize the Grid Shader object
+    // Set up Pause border
 
+    float margin = 0.995f; // Pulls the border slightly inward
+    float borderVertices[] = {
+        -margin,  margin, 0.0f, // Top Left
+        -margin, -margin, 0.0f, // Bottom Left
+        margin, -margin, 0.0f, // Bottom Right
+        margin,  margin, 0.0f  // Top Right
+    };
+
+    unsigned int borderVAO, borderVBO;
+    glGenVertexArrays(1, &borderVAO);
+    glGenBuffers(1, &borderVBO);
+    glBindVertexArray(borderVAO);
+    glBindBuffer(GL_ARRAY_BUFFER, borderVBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(borderVertices), borderVertices, GL_STATIC_DRAW);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+
+    // Set up mouse callbacks
 
     glfwSetMouseButtonCallback(window, mouse_button_callback);
     glfwSetCursorPosCallback(window, cursor_pos_callback);
@@ -576,6 +855,8 @@ int main() {
     state->bodyShape = std::make_unique<Circle>(1.0f, 36); // Unit circle
     state->gridVAO = gridVAO;
     state->gridVBO = gridVBO;
+    state->borderVAO = borderVAO;
+    state->borderVBO = borderVBO;
 
 
     /*** MAIN LOOP BEGIN ***/

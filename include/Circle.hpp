@@ -21,7 +21,7 @@ public:
             vertices.push_back(radius * sinf(theta));
             vertices.push_back(0.0f);
         }
-        vertexCount = vertices.size() / 3;
+        vertexCount = (int)(vertices.size() / 3);
 
         glGenVertexArrays(1, &VAO);
         glGenBuffers(1, &VBO);
@@ -35,6 +35,13 @@ public:
     void draw() {
         glBindVertexArray(VAO);
         glDrawArrays(GL_TRIANGLE_FAN, 0, vertexCount);
+    }
+
+    void drawLines() {
+        glBindVertexArray(VAO);
+        // We skip the first vertex (the center point at index 0)
+        // and draw the rest as a continuous loop.
+        glDrawArrays(GL_LINE_LOOP, 1, vertexCount - 1);
     }
 };
 #endif
